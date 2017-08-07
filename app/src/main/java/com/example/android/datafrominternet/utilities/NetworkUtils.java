@@ -15,9 +15,19 @@
  */
 package com.example.android.datafrominternet.utilities;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.ContextWrapper;
+import android.net.Uri;
+import android.util.Log;
+import android.widget.Toast;
+
+import com.example.android.datafrominternet.MainActivity;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
 
@@ -44,8 +54,20 @@ public class NetworkUtils {
      * @param githubSearchQuery The keyword that will be queried for.
      * @return The URL to use to query the weather server.
      */
-    public static URL buildUrl(String githubSearchQuery) {
-        // TODO (1) Fill in this method to build the proper Github query URL
+    public static URL buildUrl(String githubSearchQuery, Context context) {
+        Uri builtUri = Uri.parse(GITHUB_BASE_URL).buildUpon()
+                .appendQueryParameter(PARAM_QUERY,githubSearchQuery)
+                .appendQueryParameter(PARAM_SORT,sortBy)
+                .build();
+
+        try{
+            URL url = new URL(builtUri.toString());
+            return url;
+        } catch (MalformedURLException e){
+            Log.d("NetworkUtils","Error in buildUrl method", e);
+        }
+        // COMPLETED (1) Fill in this method to build the proper Github query URL
+        Toast.makeText(context,"UPS sth wnet wrong while constructing URL query ", Toast.LENGTH_SHORT).show();
         return null;
     }
 
